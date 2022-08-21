@@ -1,0 +1,36 @@
+{
+  "name": "bank-tads-apigateway",
+  "version": "1.0.0",
+  "description": "An API Gateway written in NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon -r dotenv/config ./index.js",
+    "start": "node -r dotenv/config ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fezer/bank-tads-apiGateway.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fezer/bank-tads-apiGateway/issues"
+  },
+  "homepage": "https://github.com/Fezer/bank-tads-apiGateway#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.18.1",
+    "express-http-proxy": "^1.6.3",
+    "helmet": "^5.1.1",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
