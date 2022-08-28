@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fezer/bank-tads-apiGateway.git"
+    "url": "git+https://github.com/TADS-UFPR-DAC/api-gateway.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Fezer/bank-tads-apiGateway/issues"
+    "url": "https://github.com/TADS-UFPR-DAC/api-gateway/issues"
   },
-  "homepage": "https://github.com/Fezer/bank-tads-apiGateway#readme",
+  "homepage": "https://github.com/TADS-UFPR-DAC/api-gateway#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
