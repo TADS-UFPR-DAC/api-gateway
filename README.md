@@ -1,2 +1,2 @@
 # bank-tads-apiGateway
-An API Gateway written in NodeJS
+An API Gateway written in NodeJS.
