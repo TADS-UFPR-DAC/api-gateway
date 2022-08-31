@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const router = require("./src/routes/router");
+const router = require("./routes/router");
 
 const jwt = require("jsonwebtoken");
 var http = require("http");
