@@ -1,11 +1,12 @@
 const express = require("express");
-const genericRouter = express.Router();
-const genericController = require("../controllers/genericController");
-
+const authRouter = express.Router();
+const authController = require("../controllers/authController");
 const auth = require("../middlewares/auth");
 
-genericRouter.post("/login", genericController.login);
-genericRouter.post("/logout", genericController.logout);
-genericRouter.post("/autocadastro", );
+const httpProxy = require("express-http-proxy");
+const authServiceProxy = httpProxy('http://localhost:5003');
 
-module.exports = genericRouter;
+authRouter.post("/login", authController.login, authServiceProxy);
+authRouter.post("/logout", authController.logout, authServiceProxy);
+
+module.exports = authRouter;
