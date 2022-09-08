@@ -41,7 +41,8 @@ const authServiceProxy = httpProxy("http://localhost:5003", {
       var str = Buffer.from(proxyResData).toString("utf-8");
       var objBody = JSON.parse(str);
       const id = objBody.id;
-      const token = generateToken(id, "objBody.perfil");
+      const perfil = objBody.perfil;
+      const token = generateToken(id, perfil);
       userRes.status(200);
       return { auth: true, token: token };
     } else {
