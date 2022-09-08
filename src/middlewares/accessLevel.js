@@ -1,13 +1,13 @@
 module.exports = {
     clientAccess(req, res, next) {
-        if (req.type != 'client')
+        if (req.type != 'cliente')
             return res.status(403).json({msg: "Não Autorizado"});
         else
             next();
     },
 
     managerAccess(req, res, next) {
-        if (req.type != 'manager')
+        if (req.type != 'gerente')
             return res.status(403).json({msg: "Não Autorizado"});
         else
             next();

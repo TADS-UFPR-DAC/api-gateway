@@ -6,11 +6,11 @@ const access = require("../middlewares/accessLevel");
 const httpProxy = require("express-http-proxy");
 const gerenteServiceProxy = httpProxy('http://localhost:5002');
 
-gerenteRouter.get("/autocadastro", access.managerAccess, auth, gerenteServiceProxy);
-gerenteRouter.put("/autocadastro/aprova/:id", access.managerAccess, auth, gerenteServiceProxy);
-gerenteRouter.put("/autocadastro/reprova/:id", access.managerAccess, auth, gerenteServiceProxy);
-gerenteRouter.get("/clientes", access.managerAccess, auth, gerenteServiceProxy);
-gerenteRouter.get("/clientes/:id", access.managerAccess, auth, gerenteServiceProxy);
-gerenteRouter.get("/clientes/top5", access.managerAccess, auth, gerenteServiceProxy);
+gerenteRouter.get("/autocadastro", auth, access.managerAccess, gerenteServiceProxy);
+gerenteRouter.put("/autocadastro/aprova/:id", auth, access.managerAccess, gerenteServiceProxy);
+gerenteRouter.put("/autocadastro/reprova/:id", auth, access.managerAccess, gerenteServiceProxy);
+gerenteRouter.get("/clientes", auth, access.managerAccess, gerenteServiceProxy);
+gerenteRouter.get("/clientes/:id", auth, access.managerAccess, gerenteServiceProxy);
+gerenteRouter.get("/clientes/top5", auth, access.managerAccess, gerenteServiceProxy);
 
 module.exports = gerenteRouter;

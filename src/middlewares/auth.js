@@ -9,6 +9,10 @@ function verifyJWT(req, res, next) {
     if (err) {
       return res.status(500).json({ auth: false, msg: "Falha na autenticação do token." });
     }
+    if (decoded.type === "admin") req.type = "admin";
+    else if (decoded.type === "gerente") req.type = "gerente";
+    else if (decoded.type === "cliente") req.type = "cliente";
+    else req.type = "invalido";
     req.userId = decoded.id;
     next();
   });

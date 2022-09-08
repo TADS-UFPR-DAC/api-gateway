@@ -15,6 +15,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(router);
+app.use(logger('dev'));
+app.use(helmet());
+app.use(cookieParser);
+
 
 app.use(async (req, res, next) => {
   try {
