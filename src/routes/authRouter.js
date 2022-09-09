@@ -5,6 +5,7 @@ const authController = require("../controllers/authController");
 
 const httpProxy = require("express-http-proxy");
 
+
 authRouter.post("/login", (req, res, next) => {
   authServiceProxy(req, res, next);
 });
