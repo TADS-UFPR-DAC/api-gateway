@@ -124,7 +124,7 @@ module.exports = {
     clienteId = req.params.id;
     valor = req.body.valor;
     var urlClienteSacar = `http://localhost:5000/saque/${clienteId}?valor=${valor}`;
-    console.log(urlClienteDepositar);
+    console.log(urlClienteSacar);
 
     await request(
       {
@@ -178,7 +178,7 @@ module.exports = {
   },
 
   async extrato(req, res) {
-    clienteId = req.params.id1;
+    clienteId = req.params.id;
     var urlClienteExtrato = `http://localhost:5000/extrato/${clienteId}`;
     console.log(urlClienteExtrato);
 
@@ -194,6 +194,39 @@ module.exports = {
         if (!error) {
           console.log(body);
           return res.status(response.statusCode).json(body);
+        } else {
+          console.log("error: " + error);
+          console.log("response.statusCode: " + response.statusCode);
+          console.log("response.statusText: " + response.statusText);
+          return res.status(500).json({"msg": "error"});
+        }
+      }
+    );
+  },
+
+  async saldo(req, res) {
+    clienteId = req.params.id;
+    var urlAcharContaById = `http://localhost:5000/${clienteId}`;
+    console.log(urlAcharContaById);
+
+    await request(
+      {
+        url: urlAcharContaById,
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      },
+      function (error, response, body) {
+        if (!error) {
+          console.log(body);
+          jsonBody = JSON.parse(body)
+          saldo = jsonBody.saldo;
+          const sendDataClienteService = {
+            saldo:saldo
+          }
+          const jsonSendDataClienteService = JSON.stringify(sendDataClienteService);
+          return res.status(response.statusCode).json(jsonSendDataClienteService);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
