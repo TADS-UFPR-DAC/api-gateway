@@ -1,6 +1,3 @@
-const httpProxy = require("express-http-proxy");
-
-
 const logout = async (req, res) => {
   process.env.JWT_SECRET = Math.random().toString(36).slice(-20);
   return res

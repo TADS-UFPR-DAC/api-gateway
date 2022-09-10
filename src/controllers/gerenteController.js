@@ -1,6 +1,5 @@
 var request = require("request");
 
-
 module.exports = {
 
     async listarAutocadastro(req, res) {

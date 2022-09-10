@@ -45,7 +45,7 @@ const authServiceProxy = httpProxy("http://localhost:5003", {
       const perfil = objBody.perfil;
       const token = generateToken(id, perfil);
       userRes.status(200);
-      return { auth: true, token: token };
+      return { auth: true, perfil: perfil, token: token };
     } else {
       userRes.status(401);
       return { message: "Login inválido!" };
