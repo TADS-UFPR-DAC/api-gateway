@@ -7,6 +7,7 @@ module.exports = {
     nome = req.body.nome;
     email = req.body.email;
     cpf = req.body.cpf;
+    salario = req.body.salario;
     tipo = req.body.endereco.tipo;
     logradouro = req.body.endereco.logradouro;
     numero = req.body.endereco.numero;
@@ -15,39 +16,14 @@ module.exports = {
     cidade = req.body.endereco.cidade;
     estado = req.body.endereco.estado;
     perfil = "cliente";
+    statusConta = "pendente";
+    gerenteIdConta = -1;
 
     var urlCriarUsuario = `http://localhost:5003/usuarios`;
 
-    const sendDataAuthService = {
-      nome:nome,
-      login:login,
-      senha:senha,
-      perfil:perfil
-    }
+    var urlCriarCliente = `http://localhost:5001/`;
 
-    const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
-
-    await request(
-      {
-        url: urlCriarUsuario,
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: jsonSendDataAuthService
-      },
-      function (error, response, body) {
-        if (!error) {
-          console.log(body);
-          return res.status(response.statusCode).json(body);
-        } else {
-          console.log("error: " + error);
-          console.log("response.statusCode: " + response.statusCode);
-          console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
-        }
-      }
-    );
+    var urlCriarContaCliente = `http://localhost:5000/`;
 
     const sendDataClienteService = {
       cpf:cpf,
@@ -63,12 +39,11 @@ module.exports = {
         estado:estado
       }
     }
-
     const jsonSendDataClienteService = JSON.stringify(sendDataClienteService);
 
+    console.log(sendDataClienteService);
     console.log(jsonSendDataClienteService);
 
-    var urlCriarCliente = `http://localhost:5001/cliente`;
     await request(
       {
         url: urlCriarCliente,
@@ -81,7 +56,72 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          return res.status(response.statusCode).json(body);
+          const cliente = JSON.parse(body);
+          const clienteId = cliente.id;
+          const sendDataAuthService = {
+            clienteId: clienteId,
+            nome:nome,
+            login:login,
+            senha:senha,
+            perfil:perfil
+          }
+          const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
+      
+          console.log(sendDataAuthService);
+          request(
+            {
+              url: urlCriarUsuario,
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: jsonSendDataAuthService
+            },
+            function (error, response, body) {
+              if (!error) {
+                console.log(body);
+                const usuario = JSON.parse(body);
+                const sendDataContaService = {
+                  idCliente: clienteId,
+                  status: statusConta,
+                  idGerente: gerenteIdConta,
+                  numero: clienteId,
+                  salario:salario,
+                }
+                const jsonSendDataContaService = JSON.stringify(sendDataContaService);
+            
+                console.log(jsonSendDataContaService);
+                request(
+                  {
+                    url: urlCriarContaCliente,
+                    method: "POST",
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: jsonSendDataContaService
+                  },
+                  function (error, response, body) {
+                    if (!error) {
+                      console.log(body);
+                      const conta = JSON.parse(body);
+                      const jsonBody = {cliente, conta, usuario}
+                      return res.status(response.statusCode).json(jsonBody);
+                    } else {
+                      console.log("error: " + error);
+                      console.log("response.statusCode: " + response.statusCode);
+                      console.log("response.statusText: " + response.statusText);
+                      return res.status(500).json({"msg": "error"});
+                    }
+                  }
+                );
+              } else {
+                console.log("error: " + error);
+                console.log("response.statusCode: " + response.statusCode);
+                console.log("response.statusText: " + response.statusText);
+                return res.status(500).json({"msg": "error"});
+              }
+            }
+          );
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
@@ -93,8 +133,8 @@ module.exports = {
   },
 
   async depositar(req, res) {
-    clienteId = req.params.id;
-    valor = req.body.valor;
+    const clienteId = req.params.id;
+    const valor = req.body.valor;
     var urlClienteDepositar = `http://localhost:5000/deposito/${clienteId}?valor=${valor}`;
     console.log(urlClienteDepositar);
 
@@ -109,7 +149,8 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          return res.status(response.statusCode).json(body);
+          const jsonBody = JSON.parse(body);
+          return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
@@ -121,8 +162,8 @@ module.exports = {
   },
 
   async sacar(req, res) {
-    clienteId = req.params.id;
-    valor = req.body.valor;
+    const clienteId = req.params.id;
+    const valor = req.body.valor;
     var urlClienteSacar = `http://localhost:5000/saque/${clienteId}?valor=${valor}`;
     console.log(urlClienteSacar);
 
@@ -137,7 +178,8 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          return res.status(response.statusCode).json(body);
+          const jsonBody = JSON.parse(body);
+          return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
@@ -149,9 +191,9 @@ module.exports = {
   },
 
   async transferir(req, res) {
-    clienteId1 = req.params.id1;
-    clienteId2 = req.params.id2;
-    valor = req.body.valor;
+    const clienteId1 = req.params.id1;
+    const clienteId2 = req.params.id2;
+    const valor = req.body.valor;
     var urlClienteTransferir = `http://localhost:5000/saque/${clienteId1}/${clienteId1}?valor=${valor}`;
     console.log(urlClienteTransferir);
 
@@ -166,7 +208,8 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          return res.status(response.statusCode).json(body);
+          const jsonBody = JSON.parse(body);
+          return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
@@ -178,7 +221,7 @@ module.exports = {
   },
 
   async extrato(req, res) {
-    clienteId = req.params.id;
+    const clienteId = req.params.id;
     var urlClienteExtrato = `http://localhost:5000/extrato/${clienteId}`;
     console.log(urlClienteExtrato);
 
@@ -193,7 +236,8 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          return res.status(response.statusCode).json(body);
+          const jsonBody = JSON.parse(body);
+          return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
@@ -205,7 +249,7 @@ module.exports = {
   },
 
   async saldo(req, res) {
-    clienteId = req.params.id;
+    const clienteId = req.params.id;
     var urlAcharContaById = `http://localhost:5000/${clienteId}`;
     console.log(urlAcharContaById);
 
@@ -220,13 +264,12 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          jsonBody = JSON.parse(body)
-          saldo = jsonBody.saldo;
+          const jsonBody = JSON.parse(body);
+          const saldo = jsonBody.saldo;
           const sendDataClienteService = {
             saldo:saldo
           }
-          const jsonSendDataClienteService = JSON.stringify(sendDataClienteService);
-          return res.status(response.statusCode).json(jsonSendDataClienteService);
+          return res.status(response.statusCode).json(sendDataClienteService);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
