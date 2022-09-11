@@ -1,9 +1,16 @@
 var request = require("request");
+const bcrypt = require("bcryptjs");
+
+function hashPassword (password){
+  const salt = bcrypt.genSaltSync(12);
+  const hash = bcrypt.hashSync(password, salt);
+  return hash;
+}
 
 module.exports = {
   async autocadastro(req, res) {
     login = req.body.usuario;
-    senha = req.body.senha;
+    password = req.body.senha;
     nome = req.body.nome;
     email = req.body.email;
     cpf = req.body.cpf;
@@ -18,6 +25,7 @@ module.exports = {
     perfil = "cliente";
     statusAprocavao = "PENDENTE";
     gerenteIdConta = -1;
+    senha = hashPassword(password);
 
     var urlCriarUsuario = `http://localhost:5003/usuarios`;
 
