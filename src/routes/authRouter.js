@@ -1,8 +1,8 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const authRouter = express.Router();
 const authController = require("../controllers/authController");
+const crypto = require('crypto');
 
 const httpProxy = require("express-http-proxy");
 
@@ -21,19 +21,12 @@ function generateToken(id, type) {
   return token;
 }
 
-function hashPassword (password){
-  const salt = bcrypt.genSaltSync(12);
-  const hash = bcrypt.hashSync(password, salt);
-  return hash;
-}
-
 const authServiceProxy = httpProxy("http://localhost:5003", {
   proxyReqBodyDecorator: function (bodyContent, srcReq) {
     try {
       retBody = {};
-      const hash = hashPassword(bodyContent.password);
       retBody.login = bodyContent.user;
-      retBody.senha = hash;
+      retBody.senha = crypto.createHash('md5').update(`${bodyContent.password}`).digest("hex");
       bodyContent = retBody;
       console.log(bodyContent);
     } catch (e) {

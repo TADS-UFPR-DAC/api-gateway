@@ -1,11 +1,5 @@
 var request = require("request");
-const bcrypt = require("bcryptjs");
-
-function hashPassword (password){
-  const salt = bcrypt.genSaltSync(12);
-  const hash = bcrypt.hashSync(password, salt);
-  return hash;
-}
+const crypto = require('crypto');
 
 module.exports = {
   async autocadastro(req, res) {
@@ -25,7 +19,7 @@ module.exports = {
     perfil = "cliente";
     statusAprocavao = "PENDENTE";
     gerenteIdConta = -1;
-    senha = hashPassword(password);
+    senha = crypto.createHash('md5').update(`${password}`).digest("hex");
 
     var urlCriarUsuario = `http://localhost:5003/usuarios`;
 
@@ -33,31 +27,7 @@ module.exports = {
 
     var urlCriarContaCliente = `http://localhost:5000/`;
 
-    var urlConsultarGerentes = `http://localhost:5002/gerentes`;
-
-    await request(
-      {
-        url: urlConsultarGerentes,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-      function (error, response, body) {
-        if (!error) {
-          console.log(body);
-          const gerentes = JSON.parse(body);
-          if(gerentes==null){
-            return res.status(400).json( { erro: "Nenhum gerente cadastrado" } );
-          }
-        } else {
-          console.log("error: " + error);
-          console.log("response.statusCode: " + response.statusCode);
-          console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({ msg: "error" });
-        }
-      }
-    );
+    var urlConsultarGerentes = `http://localhost:5002/`;
 
     const sendDataClienteService = {
       cpf: cpf,
