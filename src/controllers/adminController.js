@@ -57,7 +57,7 @@ module.exports = {
   },
 
   async inserirGerente(req, res) {
-    login = req.body.usuario;
+    login = req.body.login;
     senha = req.body.senha;
     nome = req.body.nome;
     email = req.body.email;
@@ -138,7 +138,7 @@ module.exports = {
 
   async editarGerente(req, res) {
     id = req.params.id;
-    login = req.body.usuario;
+    login = req.body.login;
     senha = req.body.senha;
     nome = req.body.nome;
     email = req.body.email;

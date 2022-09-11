@@ -25,21 +25,47 @@ module.exports = {
 
     var urlCriarContaCliente = `http://localhost:5000/`;
 
-    const sendDataClienteService = {
-      cpf:cpf,
-      nome:nome,
-      email:email,
-      status:statusAprocavao,
-      endereco:{
-        tipo:tipo,
-        logradouro:logradouro,
-        numero:numero,
-        complemento:complemento,
-        cep:cep,
-        cidade:cidade,
-        estado:estado
+    var urlConsultarGerentes = `http://localhost:5002/gerentes`;
+
+    await request(
+      {
+        url: urlConsultarGerentes,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      function (error, response, body) {
+        if (!error) {
+          console.log(body);
+          const gerentes = JSON.parse(body);
+          if(gerentes==null){
+            return res.status(400).json( { erro: "Nenhum gerente cadastrado" } );
+          }
+        } else {
+          console.log("error: " + error);
+          console.log("response.statusCode: " + response.statusCode);
+          console.log("response.statusText: " + response.statusText);
+          return res.status(500).json({ msg: "error" });
+        }
       }
-    }
+    );
+
+    const sendDataClienteService = {
+      cpf: cpf,
+      nome: nome,
+      email: email,
+      status: statusAprocavao,
+      endereco: {
+        tipo: tipo,
+        logradouro: logradouro,
+        numero: numero,
+        complemento: complemento,
+        cep: cep,
+        cidade: cidade,
+        estado: estado,
+      },
+    };
     const jsonSendDataClienteService = JSON.stringify(sendDataClienteService);
 
     console.log(sendDataClienteService);
@@ -50,9 +76,9 @@ module.exports = {
         url: urlCriarCliente,
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: jsonSendDataClienteService
+        body: jsonSendDataClienteService,
       },
       function (error, response, body) {
         if (!error) {
@@ -61,22 +87,22 @@ module.exports = {
           const idCliente = cliente.id;
           const sendDataAuthService = {
             idPessoa: idCliente,
-            nome:nome,
-            login:login,
-            senha:senha,
-            perfil:perfil
-          }
+            nome: nome,
+            login: login,
+            senha: senha,
+            perfil: perfil,
+          };
           const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
-      
+
           console.log(sendDataAuthService);
           request(
             {
               url: urlCriarUsuario,
               method: "POST",
               headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
               },
-              body: jsonSendDataAuthService
+              body: jsonSendDataAuthService,
             },
             function (error, response, body) {
               if (!error) {
@@ -86,31 +112,36 @@ module.exports = {
                   idCliente: idCliente,
                   idGerente: gerenteIdConta,
                   numero: idCliente,
-                  salario:salario,
-                }
-                const jsonSendDataContaService = JSON.stringify(sendDataContaService);
-            
+                  salario: salario,
+                };
+                const jsonSendDataContaService =
+                  JSON.stringify(sendDataContaService);
+
                 console.log(jsonSendDataContaService);
                 request(
                   {
                     url: urlCriarContaCliente,
                     method: "POST",
                     headers: {
-                      'Content-Type': 'application/json'
+                      "Content-Type": "application/json",
                     },
-                    body: jsonSendDataContaService
+                    body: jsonSendDataContaService,
                   },
                   function (error, response, body) {
                     if (!error) {
                       console.log(body);
                       const conta = JSON.parse(body);
-                      const jsonBody = {cliente, conta, usuario}
+                      const jsonBody = { cliente, conta, usuario };
                       return res.status(response.statusCode).json(jsonBody);
                     } else {
                       console.log("error: " + error);
-                      console.log("response.statusCode: " + response.statusCode);
-                      console.log("response.statusText: " + response.statusText);
-                      return res.status(500).json({"msg": "error"});
+                      console.log(
+                        "response.statusCode: " + response.statusCode
+                      );
+                      console.log(
+                        "response.statusText: " + response.statusText
+                      );
+                      return res.status(500).json({ msg: "error" });
                     }
                   }
                 );
@@ -118,7 +149,7 @@ module.exports = {
                 console.log("error: " + error);
                 console.log("response.statusCode: " + response.statusCode);
                 console.log("response.statusText: " + response.statusText);
-                return res.status(500).json({"msg": "error"});
+                return res.status(500).json({ msg: "error" });
               }
             }
           );
@@ -126,7 +157,7 @@ module.exports = {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
+          return res.status(500).json({ msg: "error" });
         }
       }
     );
@@ -143,7 +174,7 @@ module.exports = {
         url: urlClienteDepositar,
         method: "PUT",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
       },
       function (error, response, body) {
@@ -155,7 +186,7 @@ module.exports = {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
+          return res.status(500).json({ msg: "error" });
         }
       }
     );
@@ -172,7 +203,7 @@ module.exports = {
         url: urlClienteSacar,
         method: "PUT",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
       },
       function (error, response, body) {
@@ -184,7 +215,7 @@ module.exports = {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
+          return res.status(500).json({ msg: "error" });
         }
       }
     );
@@ -202,7 +233,7 @@ module.exports = {
         url: urlClienteTransferir,
         method: "PUT",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
       },
       function (error, response, body) {
@@ -214,7 +245,7 @@ module.exports = {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
+          return res.status(500).json({ msg: "error" });
         }
       }
     );
@@ -230,7 +261,7 @@ module.exports = {
         url: urlClienteExtrato,
         method: "GET",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
       },
       function (error, response, body) {
@@ -242,7 +273,7 @@ module.exports = {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
+          return res.status(500).json({ msg: "error" });
         }
       }
     );
@@ -258,7 +289,7 @@ module.exports = {
         url: urlAcharContaById,
         method: "GET",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
       },
       function (error, response, body) {
@@ -268,15 +299,15 @@ module.exports = {
           const saldo = jsonBody.saldo;
           const limite = jsonBody.limite;
           const sendDataClienteService = {
-            saldo:saldo,
-            limite:limite
-          }
+            saldo: saldo,
+            limite: limite,
+          };
           return res.status(response.statusCode).json(sendDataClienteService);
         } else {
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
-          return res.status(500).json({"msg": "error"});
+          return res.status(500).json({ msg: "error" });
         }
       }
     );
