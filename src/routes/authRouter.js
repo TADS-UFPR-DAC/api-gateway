@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const authRouter = express.Router();
 const authController = require("../controllers/authController");
+const crypto = require('crypto');
 
 const httpProxy = require("express-http-proxy");
 
@@ -25,8 +26,9 @@ const authServiceProxy = httpProxy("http://localhost:5003", {
     try {
       retBody = {};
       retBody.login = bodyContent.user;
-      retBody.senha = bodyContent.password;
+      retBody.senha = crypto.createHash('md5').update(`${bodyContent.password}`).digest("hex");
       bodyContent = retBody;
+      console.log(bodyContent);
     } catch (e) {
       console.log("- ERRO: " + e);
     }

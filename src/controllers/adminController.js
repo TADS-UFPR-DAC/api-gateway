@@ -1,4 +1,5 @@
 var request = require("request");
+const crypto = require('crypto');
 
 module.exports = {
   async listarGerentes(req, res) {
@@ -58,11 +59,13 @@ module.exports = {
 
   async inserirGerente(req, res) {
     login = req.body.login;
-    senha = req.body.senha;
+    passsword = req.body.senha;
     nome = req.body.nome;
     email = req.body.email;
     cpf = req.body.cpf;
     perfil = "gerente";
+
+    senha = crypto.createHash('md5').update(`${password}`).digest("hex");
 
     var urlCriarUsuario = `http://localhost:5003/usuarios`;
 
@@ -139,10 +142,12 @@ module.exports = {
   async editarGerente(req, res) {
     id = req.params.id;
     login = req.body.login;
-    senha = req.body.senha;
+    password = req.body.senha;
     nome = req.body.nome;
     email = req.body.email;
     cpf = req.body.cpf;
+
+    senha = crypto.createHash('md5').update(`${password}`).digest("hex");
 
     var urlEditarUsuario = `http://localhost:5003/usuarios/${id}`;
 
