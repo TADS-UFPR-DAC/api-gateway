@@ -1,7 +1,7 @@
 var amqp = require("amqplib/callback_api");
 
 amqp.connect(
-  `amqp://${process.env.SYSTEM_PORT}`,
+  `amqp://${process.env.RABBIT_HOST}`,
   function (error0, connection) {
     if (error0) {
       throw error0;

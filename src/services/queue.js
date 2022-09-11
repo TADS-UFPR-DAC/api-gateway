@@ -1,7 +1,7 @@
 //queue.js
 function connect() {
   return require("amqplib")
-    .connect(`amqp://${process.env.SYSTEM_PORT}`)
+    .connect(`amqp://${process.env.RABBIT_HOST}`)
     .then((conn) => conn.createChannel());
 }
 
