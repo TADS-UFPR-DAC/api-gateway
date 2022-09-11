@@ -1,48 +1,117 @@
-const httpProxy = require("express-http-proxy");
+var request = require("request");
 
 module.exports = {
-    async listarGerentes(req, res) {
+  async listarGerentes(req, res) {},
 
-    },
+  async listarGerente(req, res) {
+    const gerenteId = req.params.id;
+    var urlAcharGerenteById = `http://localhost:5002/${gerenteId}`;
+    console.log(urlAcharGerenteById);
 
-    async listarGerente(req, res) {
-        const gerenteId = req.params.id;
-        var urlAcharGerenteById = `http://localhost:5002/${gerenteId}`;
-        console.log(urlAcharGerenteById);
-    
-        await request(
-          {
-            url: urlAcharGerenteById,
-            method: "GET",
-            headers: {
-              'Content-Type': 'application/json'
+    await request(
+      {
+        url: urlAcharGerenteById,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      function (error, response, body) {
+        if (!error) {
+          console.log(body);
+          const jsonBody = JSON.parse(body);
+          return res.status(response.statusCode).json(jsonBody);
+        } else {
+          console.log("error: " + error);
+          console.log("response.statusCode: " + response.statusCode);
+          console.log("response.statusText: " + response.statusText);
+          return res.status(500).json({ msg: "error" });
+        }
+      }
+    );
+  },
+
+  async inserirGerente(req, res) {
+    login = req.body.usuario;
+    senha = req.body.senha;
+    nome = req.body.nome;
+    email = req.body.email;
+    cpf = req.body.cpf;
+    perfil = "gerente";
+
+    var urlCriarUsuario = `http://localhost:5003/usuarios`;
+
+    var urlCriarGerente = `http://localhost:5002/`;
+
+    const sendDataCriarGerente = {
+      cpf: cpf,
+      nome: nome,
+      email: email,
+    };
+    const jsonSendDatasendDataCriarGerente =
+      JSON.stringify(sendDataCriarGerente);
+
+    console.log(sendDataCriarGerente);
+    console.log(jsonSendDatasendDataCriarGerente);
+
+    await request(
+      {
+        url: urlCriarGerente,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonSendDatasendDataCriarGerente,
+      },
+      function (error, response, body) {
+        if (!error) {
+          console.log(body);
+          const gerente = JSON.parse(body);
+          const gerenteId = gerente.id;
+          const sendDataAuthService = {
+            clienteId: gerenteId,
+            nome: nome,
+            login: login,
+            senha: senha,
+            perfil: perfil,
+          };
+          const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
+
+          console.log(sendDataAuthService);
+          request(
+            {
+              url: urlCriarUsuario,
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: jsonSendDataAuthService,
             },
-          },
-          function (error, response, body) {
-            if (!error) {
-              console.log(body);
-              const jsonBody = JSON.parse(body);
-              return res.status(response.statusCode).json(jsonBody);
-            } else {
-              console.log("error: " + error);
-              console.log("response.statusCode: " + response.statusCode);
-              console.log("response.statusText: " + response.statusText);
-              return res.status(500).json({"msg": "error"});
+            function (error, response, body) {
+              if (!error) {
+                console.log(body);
+                const conta = JSON.parse(body);
+                const jsonBody = { cliente, conta, usuario };
+                return res.status(response.statusCode).json(jsonBody);
+              } else {
+                console.log("error: " + error);
+                console.log("response.statusCode: " + response.statusCode);
+                console.log("response.statusText: " + response.statusText);
+                return res.status(500).json({ msg: "error" });
+              }
             }
-          }
-        );
-    },
+          );
+        } else {
+          console.log("error: " + error);
+          console.log("response.statusCode: " + response.statusCode);
+          console.log("response.statusText: " + response.statusText);
+          return res.status(500).json({ msg: "error" });
+        }
+      }
+    );
+  },
 
-    async inserirGerente(req, res) {
+  async editarGerente(req, res) {},
 
-    },
-
-    async editarGerente(req, res) {
-
-    },
-
-    async deletarGerente(req, res) {
-
-    },
-
-}
+  async deletarGerente(req, res) {},
+};

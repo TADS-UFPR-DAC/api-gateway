@@ -16,7 +16,7 @@ module.exports = {
     cidade = req.body.endereco.cidade;
     estado = req.body.endereco.estado;
     perfil = "cliente";
-    statusConta = "pendente";
+    statusAprocavao = "PENDENTE";
     gerenteIdConta = -1;
 
     var urlCriarUsuario = `http://localhost:5003/usuarios`;
@@ -29,6 +29,7 @@ module.exports = {
       cpf:cpf,
       nome:nome,
       email:email,
+      status:statusAprocavao,
       endereco:{
         tipo:tipo,
         logradouro:logradouro,
@@ -57,9 +58,9 @@ module.exports = {
         if (!error) {
           console.log(body);
           const cliente = JSON.parse(body);
-          const clienteId = cliente.id;
+          const idCliente = cliente.id;
           const sendDataAuthService = {
-            clienteId: clienteId,
+            idPessoa: idCliente,
             nome:nome,
             login:login,
             senha:senha,
@@ -82,10 +83,9 @@ module.exports = {
                 console.log(body);
                 const usuario = JSON.parse(body);
                 const sendDataContaService = {
-                  idCliente: clienteId,
-                  status: statusConta,
+                  idCliente: idCliente,
                   idGerente: gerenteIdConta,
-                  numero: clienteId,
+                  numero: idCliente,
                   salario:salario,
                 }
                 const jsonSendDataContaService = JSON.stringify(sendDataContaService);

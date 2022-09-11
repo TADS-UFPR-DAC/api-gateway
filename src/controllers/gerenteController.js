@@ -186,7 +186,7 @@ module.exports = {
                               console.log(body);
                               const usuarios = JSON.parse(body);
                               const contasClientes = contas.map(t1 => ({...t1, ...clientes.find(t2 => t2.id === t1.idCliente)}))
-                              const contasTop = contasClientes.map(t1 => ({...t1, ...usuarios.find(t2 => t2.clienteId=== t1.id)}))
+                              const contasTop = contasClientes.map(t1 => ({...t1, ...usuarios.find(t2 => t2.idPessoa=== t1.id)}))
                               const jsonBody = {contasTop}
                               return res.status(response.statusCode).json(jsonBody);
                             } else {
