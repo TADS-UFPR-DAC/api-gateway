@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const router = require("./routes/router");
-const Broker = require("./services/rabbitmq");
+//const Broker = require("./services/rabbitmq");
 
 const jwt = require("jsonwebtoken");
 var http = require("http");

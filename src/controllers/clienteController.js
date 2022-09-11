@@ -207,7 +207,8 @@ module.exports = {
     const clienteId1 = req.params.id1;
     const clienteId2 = req.params.id2;
     const valor = req.body.valor;
-    var urlClienteTransferir = `http://localhost:5000/saque/${clienteId1}/${clienteId2}?valor=${valor}`;
+    //var urlClienteTransferir = `http://localhost:5000/transferencia/${clienteId1}/${clienteId2}?valor=${valor}`;
+    var urlClienteTransferir = `http://localhost:5000/transferencia/${clienteId1}/${clienteId2}`;
     console.log(urlClienteTransferir);
 
     await request(
