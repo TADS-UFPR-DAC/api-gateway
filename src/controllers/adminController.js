@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 module.exports = {
   async listarGerentes(req, res) {
-    var urlListarGerentes = `http://localhost:5002/`;
+    var urlListarGerentes = `http://${process.env.CONTA_GERENTE}:5002/`;
     console.log(urlListarGerentes);
 
     await request(
@@ -31,7 +31,7 @@ module.exports = {
 
   async listarGerente(req, res) {
     const gerenteId = req.params.id;
-    var urlAcharGerenteById = `http://localhost:5002/${gerenteId}`;
+    var urlAcharGerenteById = `http://${process.env.CONTA_GERENTE}:5002/${gerenteId}`;
     console.log(urlAcharGerenteById);
 
     await request(
@@ -67,9 +67,9 @@ module.exports = {
 
     senha = crypto.createHash('md5').update(`${password}`).digest("hex");
 
-    var urlCriarUsuario = `http://localhost:5003/usuarios`;
+    var urlCriarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios`;
 
-    var urlCriarGerente = `http://localhost:5002/`;
+    var urlCriarGerente = `http://${process.env.CONTA_GERENTE}:5002/`;
 
     const sendDataCriarGerente = {
       cpf: cpf,
@@ -149,9 +149,9 @@ module.exports = {
 
     senha = crypto.createHash('md5').update(`${password}`).digest("hex");
 
-    var urlEditarUsuario = `http://localhost:5003/usuarios/${id}`;
+    var urlEditarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios/${id}`;
 
-    var urlEditarGerente = `http://localhost:5002/${id}`;
+    var urlEditarGerente = `http://${process.env.CONTA_GERENTE}:5002/${id}`;
 
     const sendDataEditarGerente = {
       cpf: cpf,
@@ -221,9 +221,9 @@ module.exports = {
   async deletarGerente(req, res) {
     id = req.params.id;
 
-    var urlDeletarUsuario = `http://localhost:5003/usuarios/${id}`;
+    var urlDeletarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios/${id}`;
 
-    var urlDeletarGerente = `http://localhost:5002/${id}`;
+    var urlDeletarGerente = `http://${process.env.CONTA_GERENTE}:5002/${id}`;
 
     await request(
       {

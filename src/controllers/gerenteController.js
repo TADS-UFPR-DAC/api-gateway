@@ -16,7 +16,7 @@ module.exports = {
 
     async consultarClientes(req, res) {
     
-        var urlConsultarClientes = `http://localhost:5001/listar`;
+        var urlConsultarClientes = `http://${process.env.CONTA_CLIENTE}:5001/listar`;
         
         await request(
           {
@@ -30,7 +30,7 @@ module.exports = {
             if (!error) {
                 console.log(body);
                 const clientes = JSON.parse(body);
-                var urlListarContas = `http://localhost:5000/`;
+                var urlListarContas = `http://${process.env.CONTA_SERVICE}:5000/`;
                 request(
                   {
                     url: urlListarContas,
@@ -70,7 +70,7 @@ module.exports = {
 
     async consultaCliente(req, res) {
         const clienteCpf = req.params.cpf;
-        var urlConsultarClienteCpf = `http://localhost:5001/cpf/${clienteCpf}`;
+        var urlConsultarClienteCpf = `http://${process.env.CONTA_CLIENTE}:5001/cpf/${clienteCpf}`;
         
         await request(
           {
@@ -85,7 +85,7 @@ module.exports = {
                 console.log(body);
                 const cliente = JSON.parse(body);
                 const clienteId = cliente.id;
-                var urlListarContaByIdCliente = `http://localhost:5000/${clienteId}`;
+                var urlListarContaByIdCliente = `http://${process.env.CONTA_SERVICE}:5000/${clienteId}`;
                 request(
                   {
                     url: urlListarContaByIdCliente,
@@ -98,7 +98,7 @@ module.exports = {
                     if (!error) {
                         console.log(body);
                         const conta = JSON.parse(body);
-                        var urlListarAuthByIdCliente = `http://localhost:5003/usuarios/${clienteId}`;
+                        var urlListarAuthByIdCliente = `http://${process.env.CONTA_AUTH}:5003/usuarios/${clienteId}`;
                         request(
                           {
                             url: urlListarAuthByIdCliente,
@@ -141,7 +141,7 @@ module.exports = {
 
     async consultaTopClientes(req, res) {
 
-        const urlListarClientes = `http://localhost:5001/listar/`;
+        const urlListarClientes = `http://${process.env.CONTA_CLIENTE}:5001/listar/`;
 
         console.log(urlListarClientes);
 
@@ -159,7 +159,7 @@ module.exports = {
             if (!error) {
                 console.log(body);
                 const clientes = JSON.parse(body);
-                const urlListarTopContas = `http://localhost:5000/top/`;
+                const urlListarTopContas = `http://${process.env.CONTA_SERVICE}:5000/top/`;
                 request(
                   {
                     url: urlListarTopContas,
@@ -172,7 +172,7 @@ module.exports = {
                     if (!error) {
                         console.log(body);
                         const contas = JSON.parse(body);
-                        const urlListarUsuarios = `http://localhost:5003/usuarios/`;
+                        const urlListarUsuarios = `http://${process.env.CONTA_AUTH}:5003/usuarios/`;
                         request(
                           {
                             url: urlListarUsuarios,

@@ -21,7 +21,7 @@ function generateToken(id, type) {
   return token;
 }
 
-const authServiceProxy = httpProxy("http://localhost:5003", {
+const authServiceProxy = httpProxy(`http://${process.env.CONTA_AUTH}:5003`, {
   proxyReqBodyDecorator: function (bodyContent, srcReq) {
     try {
       retBody = {};

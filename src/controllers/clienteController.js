@@ -1,5 +1,6 @@
 var request = require("request");
 const crypto = require('crypto');
+const rabbit = require("../services/queue");
 
 module.exports = {
   async autocadastro(req, res) {
@@ -21,13 +22,13 @@ module.exports = {
     gerenteIdConta = -1;
     senha = crypto.createHash('md5').update(`${password}`).digest("hex");
 
-    var urlCriarUsuario = `http://localhost:5003/usuarios`;
+    var urlCriarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios`;
 
-    var urlCriarCliente = `http://localhost:5001/`;
+    var urlCriarCliente = `http://${process.env.CONTA_CLIENTE}:5001/`;
 
-    var urlCriarContaCliente = `http://localhost:5000/`;
+    var urlCriarContaCliente = `http://${process.env.CONTA_SERVICE}:5000/`;
 
-    var urlConsultarGerentes = `http://localhost:5002/`;
+    var urlConsultarGerentes = `http://${process.env.CONTA_GERENTE}:5002/`;
 
     const sendDataClienteService = {
       cpf: cpf,
@@ -132,6 +133,7 @@ module.exports = {
             }
           );
         } else {
+          console.log(response.body);
           console.log("error: " + error);
           console.log("response.statusCode: " + response.statusCode);
           console.log("response.statusText: " + response.statusText);
@@ -144,7 +146,7 @@ module.exports = {
   async depositar(req, res) {
     const clienteId = req.params.id;
     const valor = req.body.valor;
-    var urlClienteDepositar = `http://localhost:5000/deposito/${clienteId}?valor=${valor}`;
+    var urlClienteDepositar = `http://${process.env.CONTA_SERVICE}:5000/deposito/${clienteId}?valor=${valor}`;
     console.log(urlClienteDepositar);
 
     await request(
@@ -175,7 +177,7 @@ module.exports = {
   async sacar(req, res) {
     const clienteId = req.params.id;
     const valor = req.body.valor;
-    var urlClienteSacar = `http://localhost:5000/saque/${clienteId}?valor=${valor}`;
+    var urlClienteSacar = `http://${process.env.CONTA_SERVICE}:5000/saque/${clienteId}?valor=${valor}`;
     console.log(urlClienteSacar);
 
     await request(
@@ -207,8 +209,7 @@ module.exports = {
     const clienteId1 = req.params.id1;
     const clienteId2 = req.params.id2;
     const valor = req.body.valor;
-    //var urlClienteTransferir = `http://localhost:5000/transferencia/${clienteId1}/${clienteId2}?valor=${valor}`;
-    var urlClienteTransferir = `http://localhost:5000/transferencia/${clienteId1}/${clienteId2}`;
+    var urlClienteTransferir = `http://${process.env.CONTA_SERVICE}:5000/transferencia/${clienteId1}/${clienteId2}?valor=${valor}`;
     console.log(urlClienteTransferir);
 
     await request(
@@ -238,7 +239,7 @@ module.exports = {
 
   async extrato(req, res) {
     const clienteId = req.params.id;
-    var urlClienteExtrato = `http://localhost:5000/extrato/${clienteId}`;
+    var urlClienteExtrato = `http://${process.env.CONTA_SERVICE}:5000/extrato/${clienteId}`;
     console.log(urlClienteExtrato);
 
     await request(
@@ -266,7 +267,7 @@ module.exports = {
 
   async saldo(req, res) {
     const clienteId = req.params.id;
-    var urlAcharContaById = `http://localhost:5000/${clienteId}`;
+    var urlAcharContaById = `http://${process.env.CONTA_SERVICE}:5000/${clienteId}`;
     console.log(urlAcharContaById);
 
     await request(
