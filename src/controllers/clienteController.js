@@ -266,8 +266,10 @@ module.exports = {
           console.log(body);
           const jsonBody = JSON.parse(body);
           const saldo = jsonBody.saldo;
+          const limite = jsonBody.limite;
           const sendDataClienteService = {
-            saldo:saldo
+            saldo:saldo,
+            limite:limite
           }
           return res.status(response.statusCode).json(sendDataClienteService);
         } else {
