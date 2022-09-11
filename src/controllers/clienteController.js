@@ -149,7 +149,9 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          const jsonBody = JSON.parse(body);
+          if (body) {
+            var jsonBody = JSON.parse(body);
+          }
           return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
@@ -178,7 +180,9 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          const jsonBody = JSON.parse(body);
+          if (body) {
+            var jsonBody = JSON.parse(body);
+          }
           return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
@@ -208,7 +212,9 @@ module.exports = {
       function (error, response, body) {
         if (!error) {
           console.log(body);
-          const jsonBody = JSON.parse(body);
+          if (body) {
+            var jsonBody = JSON.parse(body);
+          }
           return res.status(response.statusCode).json(jsonBody);
         } else {
           console.log("error: " + error);
