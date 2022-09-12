@@ -70,61 +70,60 @@ module.exports = {
   async inserirGerente(req, res) {
     try {
       login = req.body.login;
-      passsword = req.body.senha;
+      password = req.body.senha;
       nome = req.body.nome;
       email = req.body.email;
       cpf = req.body.cpf;
       perfil = "gerente";
 
-      senha = crypto.createHash("md5").update(`${password}`).digest("hex");
+      var senha = crypto.createHash("md5").update(`${password}`).digest("hex");
 
       var urlCriarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios`;
 
-      var urlCriarGerente = `http://${process.env.CONTA_GERENTE}:5002/`;
+      var urlCriarGerente = `http://${process.env.CONTA_GERENTE}:5002/`;      
 
-      const sendDataCriarGerente = {
-        cpf: cpf,
-        nome: nome,
-        email: email,
-      };
-      const jsonSendDatasendDataCriarGerente =
-        JSON.stringify(sendDataCriarGerente);
+        const sendDataAuthService = {
+          nome: nome,
+          login: login,
+          senha: senha,
+          perfil: perfil,
+        };
 
-      console.log(sendDataCriarGerente);
-      console.log(jsonSendDatasendDataCriarGerente);
+      const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
+
+      console.log(sendDataAuthService);
 
       await request(
         {
-          url: urlCriarGerente,
+          url: urlCriarUsuario,
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: jsonSendDatasendDataCriarGerente,
+          body: jsonSendDataAuthService,
         },
         function (error, response, body) {
           if (!error) {
             console.log(body);
             const gerente = JSON.parse(body);
-            const gerenteId = gerente.id;
-            const sendDataAuthService = {
-              clienteId: gerenteId,
-              nome: nome,
-              login: login,
-              senha: senha,
-              perfil: perfil,
-            };
-            const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
 
-            console.log(sendDataAuthService);
+            const sendDataCriarGerente = {
+              id: gerente.id,
+              cpf: cpf,
+              nome: nome,
+              email: email,
+            };
+            const jsonSendDatasendDataCriarGerente =
+              JSON.stringify(sendDataCriarGerente);
+
             request(
               {
-                url: urlCriarUsuario,
+                url: urlCriarGerente,
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: jsonSendDataAuthService,
+                body: jsonSendDatasendDataCriarGerente,
               },
               function (error, response, body) {
                 if (!error) {
@@ -147,7 +146,7 @@ module.exports = {
             return res.status(500).json({ msg: "error" });
           }
         }
-      );
+      );      
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });
