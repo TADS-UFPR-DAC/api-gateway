@@ -132,7 +132,7 @@ module.exports = {
                   const jsonBody = { gerente, usuario };
                   return res.status(response.statusCode).json(jsonBody);
                 } else {
-                  rabbit.publish("gerente", "deletarGerente", gerente);
+                  rabbit.publish("auth", "deletarUsuario", usuario);
                   console.log("error: " + error);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
