@@ -48,7 +48,7 @@ module.exports = {
         function (error, response, body) {
           console.log(body);
           if (!error && response.statusCode.valueOf() < 299) {
-            return res.status(response.statusCode).json(jsonBody);
+            return res.status(response.statusCode).json(body);
           } else {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
@@ -79,7 +79,7 @@ module.exports = {
         function (error, response, body) {
           if (!error && response.statusCode.valueOf() < 299) {
             console.log(body);
-            return res.status(response.statusCode).json(jsonBody);
+            return res.status(response.statusCode).json(body);
           } else {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
