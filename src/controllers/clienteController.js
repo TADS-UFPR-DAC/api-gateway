@@ -5,7 +5,7 @@ const rabbit = require("../services/queue");
 module.exports = {
   async autocadastro(req, res) {
     try {
-      login = req.body.usuario;
+      login = req.body.login;
       password = req.body.senha;
       nome = req.body.nome;
       email = req.body.email;
@@ -22,6 +22,11 @@ module.exports = {
       statusAprocavao = "PENDENTE";
       gerenteIdConta = -1;
       senha = crypto.createHash("md5").update(`${password}`).digest("hex");
+
+      console.log(req.body);
+
+      console.log(login);
+      console.log(req.body.usuario);
 
       var urlCriarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios`;
 

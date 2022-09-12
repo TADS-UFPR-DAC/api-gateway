@@ -76,6 +76,9 @@ module.exports = {
       cpf = req.body.cpf;
       perfil = "gerente";
 
+      console.log(login);
+      console.log(password);
+
       var senha = crypto.createHash("md5").update(`${password}`).digest("hex");
 
       var urlCriarUsuario = `http://${process.env.CONTA_AUTH}:5003/usuarios`;
@@ -106,7 +109,7 @@ module.exports = {
           if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const gerente = JSON.parse(body);
-
+            console.log(body);
             const sendDataCriarGerente = {
               id: gerente.id,
               cpf: cpf,
