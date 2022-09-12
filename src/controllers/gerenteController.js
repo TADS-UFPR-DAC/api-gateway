@@ -11,6 +11,29 @@ module.exports = {
 
   async aprovarAutocadastro(req, res) {
     try {
+      const id = req.params.id;
+      var urlAprovarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/aprovar/${id}`;
+
+      await request(
+        {
+          url: urlAprovarAutocadastro,
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        function (error, response, body) {
+          console.log(body);
+          if (!error && response.statusCode.valueOf() < 299) {
+            return res.status(response.statusCode).json(jsonBody);
+          } else {
+            console.log("error: " + error);
+            console.log("response.statusCode: " + response.statusCode);
+            console.log("response.statusText: " + response.statusText);
+            return res.status(500).json({ msg: "error" });
+          }
+        }
+      );
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });
@@ -19,6 +42,29 @@ module.exports = {
 
   async reprovarAutocadastro(req, res) {
     try {
+      const id = req.params.id;
+      var urlReprovarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/reprovar/${id}`;
+
+      await request(
+        {
+          url: urlReprovarAutocadastro,
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        function (error, response, body) {
+          if (!error && response.statusCode.valueOf() < 299) {
+            console.log(body);
+            return res.status(response.statusCode).json(jsonBody);
+          } else {
+            console.log("error: " + error);
+            console.log("response.statusCode: " + response.statusCode);
+            console.log("response.statusText: " + response.statusText);
+            return res.status(500).json({ msg: "error" });
+          }
+        }
+      );
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });
@@ -38,7 +84,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && response.statusCode.valueOf() < 299) {
             console.log(body);
             const clientes = JSON.parse(body);
             var urlListarContas = `http://${process.env.CONTA_SERVICE}:5000/`;
@@ -51,7 +97,7 @@ module.exports = {
                 },
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && response.statusCode.valueOf() < 299) {
                   console.log(body);
                   const contas = JSON.parse(body);
                   // var mergedList = _.map(clientes, function(item){
@@ -99,7 +145,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && response.statusCode.valueOf() < 299) {
             console.log(body);
             const cliente = JSON.parse(body);
             const clienteId = cliente.id;
@@ -113,7 +159,7 @@ module.exports = {
                 },
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && response.statusCode.valueOf() < 299) {
                   console.log(body);
                   const conta = JSON.parse(body);
                   var urlListarAuthByIdCliente = `http://${process.env.CONTA_AUTH}:5003/usuarios/${clienteId}`;
@@ -126,7 +172,7 @@ module.exports = {
                       },
                     },
                     function (error, response, body) {
-                      if (!error) {
+                      if (!error && response.statusCode.valueOf() < 299) {
                         console.log(body);
                         const usuario = JSON.parse(body);
                         const jsonBody = { cliente, usuario, conta };
@@ -139,7 +185,9 @@ module.exports = {
                         console.log(
                           "response.statusText: " + response.statusText
                         );
-                        return res.status(response.statusCode).json({ msg: "error" });
+                        return res
+                          .status(response.statusCode)
+                          .json({ msg: "error" });
                       }
                     }
                   );
@@ -182,7 +230,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && response.statusCode.valueOf() < 299) {
             console.log(body);
             const clientes = JSON.parse(body);
             const urlListarTopContas = `http://${process.env.CONTA_SERVICE}:5000/top/`;
@@ -195,7 +243,7 @@ module.exports = {
                 },
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && response.statusCode.valueOf() < 299) {
                   console.log(body);
                   const contas = JSON.parse(body);
                   const urlListarUsuarios = `http://${process.env.CONTA_AUTH}:5003/usuarios/`;
@@ -208,7 +256,7 @@ module.exports = {
                       },
                     },
                     function (error, response, body) {
-                      if (!error) {
+                      if (!error && response.statusCode.valueOf() < 299) {
                         console.log(body);
                         const usuarios = JSON.parse(body);
                         const contasClientes = contas.map((t1) => ({
@@ -229,7 +277,9 @@ module.exports = {
                         console.log(
                           "response.statusText: " + response.statusText
                         );
-                        return res.status(response.statusCode).json({ msg: "error" });
+                        return res
+                          .status(response.statusCode)
+                          .json({ msg: "error" });
                       }
                     }
                   );
