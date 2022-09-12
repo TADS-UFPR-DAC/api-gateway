@@ -35,7 +35,7 @@ module.exports = {
   async aprovarAutocadastro(req, res) {
     try {
       const id = req.params.id;
-      var urlAprovarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/aprovar/${id}`;
+      var urlAprovarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/aprovar?id=${id}`;
 
       await request(
         {
@@ -66,7 +66,7 @@ module.exports = {
   async reprovarAutocadastro(req, res) {
     try {
       const id = req.params.id;
-      var urlReprovarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/reprovar/${id}`;
+      var urlReprovarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/reprovar?id=${id}`;
 
       await request(
         {
