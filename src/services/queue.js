@@ -16,6 +16,15 @@ function createQueue(channel, queue) {
   });
 }
 
+function publish(queue, key, message){
+    connect()
+    .then((channel) => createQueue(channel, queue))
+    .then((channel) =>
+      channel.publish(queue, key, Buffer.from(JSON.stringify(message)))
+    )
+    .catch((err) => console.log(err));
+}
+
 function sendToQueue(queue, message) {
   connect()
     .then((channel) => createQueue(channel, queue))
@@ -35,4 +44,5 @@ function consume(queue, callback) {
 module.exports = {
   sendToQueue,
   consume,
+  publish
 };

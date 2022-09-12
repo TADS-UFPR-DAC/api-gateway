@@ -61,7 +61,7 @@ module.exports = {
           body: jsonSendDataClienteService,
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && response.statusCode == (200 || 201 || 202 || 203 || 204 || 205 || 206 || 207 || 208 || 226) ) {
             console.log(body);
             const cliente = JSON.parse(body);
             const idCliente = cliente.id;
@@ -85,7 +85,7 @@ module.exports = {
                 body: jsonSendDataAuthService,
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && response.statusCode == (200 || 201 || 202 || 203 || 204 || 205 || 206 || 207 || 208 || 226) ) {
                   console.log(body);
                   const usuario = JSON.parse(body);
                   const sendDataContaService = {
@@ -108,25 +108,24 @@ module.exports = {
                       body: jsonSendDataContaService,
                     },
                     function (error, response, body) {
-                      if (!error) {
+                      if (!error && response.statusCode == (200 || 201 || 202 || 203 || 204 || 205 || 206 || 207 || 208 || 226) ) {
                         console.log(body);
                         const conta = JSON.parse(body);
                         const jsonBody = { cliente, conta, usuario };
                         return res.status(response.statusCode).json(jsonBody);
                       } else {
+                        rabbit.publish("auth", "deletarUsuario", usuario);
+                        rabbit.publish("cliente", "deletarCliente", cliente);
                         console.log("error: " + error);
-                        console.log(
-                          "response.statusCode: " + response.statusCode
-                        );
-                        console.log(
-                          "response.statusText: " + response.statusText
-                        );
+                        console.log("response.statusCode: " + response.statusCode);
+                        console.log("response.statusText: " + response.statusText);
                         return res.status(500).json({ msg: "error" });
                       }
                     }
                   );
                 } else {
                   console.log("error: " + error);
+                  rabbit.publish("cliente", "deletarCliente", cliente);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
                   return res.status(500).json({ msg: "error" });
