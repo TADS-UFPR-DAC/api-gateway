@@ -3,6 +3,29 @@ var request = require("request");
 module.exports = {
   async listarAutocadastro(req, res) {
     try {
+      var urlListarAutocadastro = `http://${process.env.CONTA_CLIENTE}:5001/autocadastro/`;
+
+      await request(
+        {
+          url: urlListarAutocadastro,
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        function (error, response, body) {
+          console.log(body);
+          const clientes = JSON.parse(body);
+          if (!error && response.statusCode.valueOf() < 299) {
+            return res.status(response.statusCode).json(clientes);
+          } else {
+            console.log("error: " + error);
+            console.log("response.statusCode: " + response.statusCode);
+            console.log("response.statusText: " + response.statusText);
+            return res.status(500).json({ msg: "error" });
+          }
+        }
+      );
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });
