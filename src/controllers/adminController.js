@@ -16,7 +16,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const jsonBody = JSON.parse(body);
             return res.status(response.statusCode).json(jsonBody);
@@ -24,7 +24,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -49,7 +49,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const jsonBody = JSON.parse(body);
             return res.status(response.statusCode).json(jsonBody);
@@ -57,7 +57,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -103,7 +103,7 @@ module.exports = {
           body: jsonSendDatasendDataCriarGerente,
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const gerente = JSON.parse(body);
             const gerenteId = gerente.id;
@@ -127,16 +127,17 @@ module.exports = {
                 body: jsonSendDataAuthService,
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && (response.statusCode.valueOf() < 299 ) ) {
                   console.log(body);
                   const usuario = JSON.parse(body);
                   const jsonBody = { gerente, usuario };
                   return res.status(response.statusCode).json(jsonBody);
                 } else {
+                  rabbit.publish("gerente", "deletarGerente", gerente);
                   console.log("error: " + error);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
-                  return res.status(500).json({ msg: "error" });
+                  return res.status(response.statusCode).json({ msg: "error" });
                 }
               }
             );
@@ -144,7 +145,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -189,7 +190,7 @@ module.exports = {
           body: jsonsendDataEditarGerente,
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const gerente = JSON.parse(body);
             const gerenteId = gerente.id;
@@ -211,7 +212,7 @@ module.exports = {
                 body: jsonSendDataAuthService,
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && (response.statusCode.valueOf() < 299 ) ) {
                   console.log(body);
                   const usuario = JSON.parse(body);
                   const jsonBody = { gerente, usuario };
@@ -220,7 +221,7 @@ module.exports = {
                   console.log("error: " + error);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
-                  return res.status(500).json({ msg: "error" });
+                  return res.status(response.statusCode).json({ msg: "error" });
                 }
               }
             );
@@ -228,7 +229,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -255,7 +256,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
 
             request(
@@ -267,14 +268,14 @@ module.exports = {
                 },
               },
               function (error, response, body) {
-                if (!error) {
+                if (!error && (response.statusCode.valueOf() < 299 ) ) {
                   console.log(body);
                   return res.status(response.statusCode).json(jsonBody);
                 } else {
                   console.log("error: " + error);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
-                  return res.status(500).json({ msg: "error" });
+                  return res.status(response.statusCode).json({ msg: "error" });
                 }
               }
             );
@@ -282,7 +283,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );

@@ -75,7 +75,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -139,7 +139,7 @@ module.exports = {
                         console.log(
                           "response.statusText: " + response.statusText
                         );
-                        return res.status(500).json({ msg: "error" });
+                        return res.status(response.statusCode).json({ msg: "error" });
                       }
                     }
                   );
@@ -147,7 +147,7 @@ module.exports = {
                   console.log("error: " + error);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
-                  return res.status(500).json({ msg: "error" });
+                  return res.status(response.statusCode).json({ msg: "error" });
                 }
               }
             );
@@ -155,7 +155,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -229,7 +229,7 @@ module.exports = {
                         console.log(
                           "response.statusText: " + response.statusText
                         );
-                        return res.status(500).json({ msg: "error" });
+                        return res.status(response.statusCode).json({ msg: "error" });
                       }
                     }
                   );
@@ -237,7 +237,7 @@ module.exports = {
                   console.log("error: " + error);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
-                  return res.status(500).json({ msg: "error" });
+                  return res.status(response.statusCode).json({ msg: "error" });
                 }
               }
             );
@@ -245,7 +245,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );

@@ -61,7 +61,7 @@ module.exports = {
           body: jsonSendDataClienteService,
         },
         function (error, response, body) {
-          if (!error && response.statusCode == (200 || 201 || 202 || 203 || 204 || 205 || 206 || 207 || 208 || 226) ) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const cliente = JSON.parse(body);
             const idCliente = cliente.id;
@@ -85,7 +85,7 @@ module.exports = {
                 body: jsonSendDataAuthService,
               },
               function (error, response, body) {
-                if (!error && response.statusCode == (200 || 201 || 202 || 203 || 204 || 205 || 206 || 207 || 208 || 226) ) {
+                if (!error && (response.statusCode.valueOf() < 299 ) ) {
                   console.log(body);
                   const usuario = JSON.parse(body);
                   const sendDataContaService = {
@@ -108,35 +108,39 @@ module.exports = {
                       body: jsonSendDataContaService,
                     },
                     function (error, response, body) {
-                      if (!error && response.statusCode == (200 || 201 || 202 || 203 || 204 || 205 || 206 || 207 || 208 || 226) ) {
+                      if (!error && (response.statusCode.valueOf() < 299 ) ) {
                         console.log(body);
                         const conta = JSON.parse(body);
                         const jsonBody = { cliente, conta, usuario };
+                        console.log("3");
                         return res.status(response.statusCode).json(jsonBody);
                       } else {
+                        console.log("33");
                         rabbit.publish("auth", "deletarUsuario", usuario);
                         rabbit.publish("cliente", "deletarCliente", cliente);
                         console.log("error: " + error);
                         console.log("response.statusCode: " + response.statusCode);
                         console.log("response.statusText: " + response.statusText);
-                        return res.status(500).json({ msg: "error" });
+                        return res.status(response.statusCode).json({ msg: "error" });
                       }
                     }
                   );
                 } else {
+                  console.log("aqui");
                   console.log("error: " + error);
                   rabbit.publish("cliente", "deletarCliente", cliente);
                   console.log("response.statusCode: " + response.statusCode);
                   console.log("response.statusText: " + response.statusText);
-                  return res.status(500).json({ msg: "error" });
+                  return res.status(response.statusCode).json({ msg: "error" });
                 }
               }
             );
           } else {
+            console.log("aqui22");
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -162,7 +166,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             if (body) {
               var jsonBody = JSON.parse(body);
@@ -172,7 +176,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -198,7 +202,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             if (body) {
               var jsonBody = JSON.parse(body);
@@ -208,7 +212,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -235,7 +239,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             if (body) {
               var jsonBody = JSON.parse(body);
@@ -245,7 +249,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -270,7 +274,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const jsonBody = JSON.parse(body);
             return res.status(response.statusCode).json(jsonBody);
@@ -278,7 +282,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
@@ -303,7 +307,7 @@ module.exports = {
           },
         },
         function (error, response, body) {
-          if (!error) {
+          if (!error && (response.statusCode.valueOf() < 299 ) ) {
             console.log(body);
             const jsonBody = JSON.parse(body);
             const saldo = jsonBody.saldo;
@@ -317,7 +321,7 @@ module.exports = {
             console.log("error: " + error);
             console.log("response.statusCode: " + response.statusCode);
             console.log("response.statusText: " + response.statusText);
-            return res.status(500).json({ msg: "error" });
+            return res.status(response.statusCode).json({ msg: "error" });
           }
         }
       );
