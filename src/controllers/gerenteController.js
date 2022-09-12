@@ -8,7 +8,7 @@ module.exports = {
       await request(
         {
           url: urlListarAutocadastro,
-          method: "PUT",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
