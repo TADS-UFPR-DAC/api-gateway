@@ -21,7 +21,7 @@ module.exports = {
       perfil = "cliente";
       statusAprocavao = "PENDENTE";
       gerenteIdConta = -1;
-      senha = crypto.createHash("md5").update(`${password}`).digest("hex");
+      senha2 = crypto.createHash("md5").update(`${password}`).digest("hex");
 
       console.log(req.body);
 
@@ -74,7 +74,7 @@ module.exports = {
               idPessoa: idCliente,
               nome: nome,
               login: login,
-              senha: senha,
+              senha: senha2,
               perfil: perfil,
             };
             const jsonSendDataAuthService = JSON.stringify(sendDataAuthService);
